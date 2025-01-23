@@ -13,10 +13,10 @@ app.use(bodyParser.json());
 // Configuración de la conexión a la base de datos PostgreSQL
 const pool = new Pool({
     host: process.env.RDS_DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    port: process.env.RDS_DB_PORT,
+    user: process.env.RDS_DB_USERNAME,
+    password: process.env.RDS_DB_PASSWORD,
+    database: process.env.RDS_DB_NAME,
 });
 
 /**
