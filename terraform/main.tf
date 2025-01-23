@@ -182,7 +182,7 @@ resource "aws_security_group" "elb-sg" {
 # TARGET GROUP
 resource "aws_lb_target_group" "todo-app-tg" {
   name        = "todo-app-tg"
-  port        = 80
+  port        = 5000
   protocol    = "HTTP"
   vpc_id      = aws_vpc.lab_vpc.id
   target_type = "instance"
@@ -380,5 +380,22 @@ resource "aws_s3_bucket_website_configuration" "website-config" {
   }
   error_document {
     key = "404.jpeg"
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "example" {
+  bucket = data.aws_s3_bucket.selected-bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "POST"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+
+  cors_rule {
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
   }
 }

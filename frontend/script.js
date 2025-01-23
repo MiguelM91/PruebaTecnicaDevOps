@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   displayTasks();
 });
 
-const apiBaseUrl = 'http://localhost.comn:3000';
+const apiBaseUrl = 'http://todo-app-lb-912273965.us-east-1.elb.amazonaws.com';
 
 function addTask() {
   const newTask = todoInput.value.trim();
