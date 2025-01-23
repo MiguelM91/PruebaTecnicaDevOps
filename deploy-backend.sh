@@ -15,6 +15,7 @@ docker rm -f todo-app-container
 
 docker run -d -p 5000:5000 \
           --name todo-app-container \
+          -it \
           -e RDS_INSTANCE_IDENTIFIER=todo-db-instance \
           -e RDS_DB_NAME=todo_db \
           -e RDS_USERNAME=miguel \
