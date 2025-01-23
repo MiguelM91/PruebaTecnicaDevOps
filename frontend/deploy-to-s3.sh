@@ -1,0 +1,1 @@
+aws s3 cp . s3://www.front-end-storage --recursive --acl public-read
