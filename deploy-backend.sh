@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Comando para compilar el backend
 docker build \
           --build-arg RDS_INSTANCE_IDENTIFIER=todo-db-instance \
