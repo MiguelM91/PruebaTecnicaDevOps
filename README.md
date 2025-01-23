@@ -7,6 +7,9 @@ Este proyecto despliega una aplicación web sencilla utilizando infraestructura 
 
 ## Arquitectura Utilizada
 
+![Arquitectura (1)](https://github.com/user-attachments/assets/8473222e-16f7-4d47-af0b-0070312216b1)
+
+
 1. **VPC (Virtual Private Cloud)**
    - **VPC:** Se crea una VPC con un bloque CIDR de 10.0.0.0/16 para aislar la infraestructura de red.
 
