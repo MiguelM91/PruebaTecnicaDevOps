@@ -56,3 +56,25 @@ Este proyecto despliega una aplicación web sencilla utilizando infraestructura 
 4. **Monitoreo y Logging:** Configurar CloudWatch para monitorear el rendimiento de la aplicación y registrar eventos importantes.
 5. **Backup y Recuperación:** Configurar estrategias de backup y recuperación para la base de datos RDS.
 6. **Integración y Despliegue Continuo:** Implementar un flujo de CICD completo utilizando Jenkins para integrar los cambios realizados y para desplegar la solución generando una imagen nueva actualizada. El pipeline se ejecutaría con cada commit hacia el repositorio.
+
+
+## Infraestructura creada en AWS
+
+### Bucket para hostear fronend
+![image](https://github.com/user-attachments/assets/2ecf079c-be17-4654-9d17-66b50c4890b3)
+
+### Balanceador de carga para recibir peticiones
+![image](https://github.com/user-attachments/assets/7afec8c9-4586-4cdd-81a0-fb218f5cd189)
+
+### Instancia de EC2 que corre la API
+![image](https://github.com/user-attachments/assets/85ce7133-2b52-4a6e-a37d-3d45fc9555a5)
+
+### Instancia RDS que contiene la base de datos
+![image](https://github.com/user-attachments/assets/0d800d9a-69a8-4aed-ac18-23ff540113c4)
+
+
+
+
+
+
+
