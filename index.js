@@ -19,6 +19,14 @@ const pool = new Pool({
     database: process.env.RDS_DB_NAME,
 });
 
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+  });
+
 /**
  * @swagger
  * /data:
