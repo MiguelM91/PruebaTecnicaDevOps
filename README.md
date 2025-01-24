@@ -1,83 +1,74 @@
-# PRUEBA TÉCNICA ROL DEVOPS
+# DEVOPS ROLE TECHNICAL TEST
 
-**Autor:** Miguel Arturo Muñoz Segura
+**Author:** Miguel Arturo Muñoz Segura
 
-## Descripción del Proyecto
-Este proyecto despliega una aplicación web sencilla utilizando infraestructura en AWS gestionada con Terraform. La aplicación consta de un frontend alojado en un bucket de S3, un backend contenerizado en Docker que corre en una instancia EC2 t2.micro, y una base de datos PostgreSQL gestionada por el servicio RDS de AWS. La aplicación permite insertar y obtener registros.
+## Project Description
+This project deploys a simple web application using AWS infrastructure managed with Terraform. The application consists of a frontend hosted in an S3 bucket, a Docker-containerized backend running on a t2.micro EC2 instance, and a PostgreSQL database managed by AWS RDS. The application allows users to insert and retrieve records.
 
-## Arquitectura Utilizada
+## Architecture Used
 
-![Arquitectura (1)](https://github.com/user-attachments/assets/8473222e-16f7-4d47-af0b-0070312216b1)
-
+![Architecture (1)](https://github.com/user-attachments/assets/8473222e-16f7-4d47-af0b-0070312216b1)
 
 1. **VPC (Virtual Private Cloud)**
-   - **VPC:** Se crea una VPC con un bloque CIDR de 10.0.0.0/16 para aislar la infraestructura de red.
+   - **VPC:** A VPC is created with a CIDR block of 10.0.0.0/16 to isolate the network infrastructure.
 
-2. **Subredes**
-   - **Subred Pública:** Dos subredes públicas en diferentes zonas de disponibilidad (us-east-1a y us-east-1b) para alta disponibilidad.
-   - **Subred Privada:** Dos subredes privadas en diferentes zonas de disponibilidad para la base de datos y otros recursos internos.
+2. **Subnets**
+   - **Public Subnet:** Two public subnets in different availability zones (us-east-1a and us-east-1b) for high availability.
+   - **Private Subnet:** Two private subnets in different availability zones for the database and other internal resources.
 
-3. **Internet Gateway y Tabla de Rutas**
-   - **Internet Gateway:** Permite la comunicación de las subredes públicas con Internet.
-   - **Tabla de Rutas Pública:** Configurada para enrutar el tráfico de las subredes públicas a través del Internet Gateway.
+3. **Internet Gateway and Route Table**
+   - **Internet Gateway:** Enables communication between public subnets and the Internet.
+   - **Public Route Table:** Configured to route traffic from public subnets through the Internet Gateway.
 
 4. **S3**
-   - **Bucket S3:** Almacena los archivos estáticos del frontend de la aplicación.
+   - **S3 Bucket:** Stores the static files for the application frontend.
 
 5. **EC2**
-   - **Instancia EC2 t2.micro:** Corre el backend contenerizado en Docker. Se eligió t2.micro por su bajo costo y suficiente capacidad para una aplicación sencilla.
+   - **t2.micro EC2 Instance:** Runs the Docker-containerized backend. t2.micro was chosen for its low cost and sufficient capacity for a simple application.
 
 6. **RDS**
-   - **RDS PostgreSQL:** Base de datos gestionada que proporciona alta disponibilidad y escalabilidad. PostgreSQL fue elegido por su robustez y características avanzadas.
+   - **RDS PostgreSQL:** Managed database service that provides high availability and scalability. PostgreSQL was chosen for its robustness and advanced features.
 
-7. **Balanceador de Carga**
-   - **ALB:** Distribuye el tráfico entrante entre las instancias EC2 para mejorar la disponibilidad y escalabilidad de la aplicación.
-     - **Target Group:** Grupo de destino que incluye la instancia EC2.
-     - **Listener:** Configurado para escuchar en el puerto 80 y reenviar el tráfico al grupo de destino.
+7. **Load Balancer**
+   - **ALB:** Distributes incoming traffic among EC2 instances to improve application availability and scalability.
+     - **Target Group:** Target group that includes the EC2 instance.
+     - **Listener:** Configured to listen on port 80 and forward traffic to the target group.
 
-## Razones para Elegir este Stack
+## Reasons for Choosing This Stack
 
-### Costos
-- **EC2 t2.micro:** Es una de las instancias más económicas, adecuada para aplicaciones de baja carga.
-- **S3:** Ofrece almacenamiento escalable y de bajo costo para archivos estáticos.
-- **RDS:** Aunque es más costoso que una base de datos autogestionada, RDS reduce la carga operativa y proporciona backups automáticos, recuperación ante desastres y escalabilidad.
-- **ALB:** Proporciona balanceo de carga a un costo razonable, mejorando la disponibilidad sin necesidad de gestionar múltiples instancias manualmente.
+### Cost
+- **t2.micro EC2:** One of the most cost-effective instances, suitable for low-load applications.
+- **S3:** Provides scalable and low-cost storage for static files.
+- **RDS:** While more expensive than self-managed databases, RDS reduces operational overhead and offers automatic backups, disaster recovery, and scalability.
+- **ALB:** Offers load balancing at a reasonable cost, improving availability without the need to manage multiple instances manually.
 
-### Disponibilidad
-- **Multi-AZ:** La utilización de múltiples zonas de disponibilidad para subredes y RDS asegura alta disponibilidad y tolerancia a fallos.
-- **S3:** Ofrece alta durabilidad y disponibilidad para los archivos estáticos.
-- **ALB:** Mejora la disponibilidad al distribuir el tráfico entre múltiples instancias EC2.
+### Availability
+- **Multi-AZ:** Using multiple availability zones for subnets and RDS ensures high availability and fault tolerance.
+- **S3:** Provides high durability and availability for static files.
+- **ALB:** Enhances availability by distributing traffic among multiple EC2 instances.
 
-### Escalabilidad
-- **S3 y RDS:** Ambos servicios son altamente escalables, permitiendo manejar incrementos en la carga sin necesidad de cambios significativos en la infraestructura.
-- **ALB:** Facilita la escalabilidad horizontal al permitir añadir o quitar instancias EC2 según sea necesario.
+### Scalability
+- **S3 and RDS:** Both services are highly scalable, enabling handling of increased load without significant infrastructure changes.
+- **ALB:** Facilitates horizontal scalability by allowing the addition or removal of EC2 instances as needed.
 
-## Posibles Mejoras
-1. **Auto Scaling:** Implementar grupos de autoescalado para la instancia EC2 para manejar incrementos en la carga de trabajo.
-2. **CloudFront:** Utilizar Amazon CloudFront para distribuir el contenido del frontend globalmente con baja latencia.
-3. **Seguridad:** Implementar políticas de IAM más estrictas y grupos de seguridad para mejorar la seguridad de la infraestructura. Uso de secretos para la información sensible. Por temas de tiempo se dejaron quemadas dentro del código lo cual es una mala práctica.
-4. **Monitoreo y Logging:** Configurar CloudWatch para monitorear el rendimiento de la aplicación y registrar eventos importantes.
-5. **Backup y Recuperación:** Configurar estrategias de backup y recuperación para la base de datos RDS.
-6. **Integración y Despliegue Continuo:** Implementar un flujo de CICD completo utilizando Jenkins para integrar los cambios realizados y para desplegar la solución generando una imagen nueva actualizada. El pipeline se ejecutaría con cada commit hacia el repositorio.
+## Possible Improvements
+1. **Auto Scaling:** Implement auto-scaling groups for the EC2 instance to handle workload increases.
+2. **CloudFront:** Use Amazon CloudFront to globally distribute frontend content with low latency.
+3. **Security:** Implement stricter IAM policies and security groups to enhance infrastructure security. Use secrets for sensitive information. Due to time constraints, credentials were hardcoded, which is a bad practice.
+4. **Monitoring and Logging:** Configure CloudWatch to monitor application performance and log important events.
+5. **Backup and Recovery:** Set up backup and recovery strategies for the RDS database.
+6. **Continuous Integration and Deployment:** Implement a complete CI/CD pipeline using Jenkins to integrate changes and deploy the solution by generating an updated image. The pipeline would run with each commit to the repository.
 
+## AWS Infrastructure Created
 
-## Infraestructura creada en AWS
-
-### Bucket para hostear fronend
+### Bucket for Hosting Frontend
 ![image](https://github.com/user-attachments/assets/2ecf079c-be17-4654-9d17-66b50c4890b3)
 
-### Balanceador de carga para recibir peticiones
+### Load Balancer to Receive Requests
 ![image](https://github.com/user-attachments/assets/7afec8c9-4586-4cdd-81a0-fb218f5cd189)
 
-### Instancia de EC2 que corre la API
+### EC2 Instance Running the API
 ![image](https://github.com/user-attachments/assets/85ce7133-2b52-4a6e-a37d-3d45fc9555a5)
 
-### Instancia RDS que contiene la base de datos
+### RDS Instance Containing the Database
 ![image](https://github.com/user-attachments/assets/0d800d9a-69a8-4aed-ac18-23ff540113c4)
-
-
-
-
-
-
-
